@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head')%>
+    <title>Blog</title>
+</head>
+<body>
+    <%- include('./partials/nav')%>
+    <div class="container mt-4">
+        <h1><%= blog.title %></h1>  <!--provides blog title name -->
+        <img src="<%= blog.coverImageURL %>" width="700px"/>  <!--provides blog image name -->
+         <pre class="mt-3"><%= blog.body%></pre> <!--provides blog body name and <pre> tag maintain the spacing-->
+    </div>
+    <div class="container mt-4">
+        <img src="/<%= blog.createdBy.ProfileImageUrl%>" width="60px" ><%=blog.createdBy.fullName %>
+    </div>
+    
+    <div class="container mt-3">
+        <h1>Comments (<%=comments.length %>)</h1>     <!--locals is collection of object stored all the values suppose we write if(age) then it will be incorrect or undeclared from backend , it is used to write if(locals.age) -->
+        <% if(locals.user){ %>   <!-- if user had logged in then only he can see the comment section and can comment otherwise not have option to comment -->
+        <form action="/blog/comment/<%=blog._id %>" method="post">  <!-- the comment will shown in the database-->
+            <div class="mb-3">
+              <input type="text" name="content" class="form-control" id="exampleInputEmail1" 
+              placeholder="Enter your comment"/>  
+             <button class="btn btn-sm btn-primary" type="submit">Add</button> <!-- btn btn-sm btn-primary is button property-->
+            </div>
+        </form>
+        <!--comment will be seen to logout user but they don't comment without logged in-->
+       <% }%>
+       <div class="mt-3">
+        <% comments.forEach(comment=> { %>
+           <div>
+            <img src="/<%= comment.createdBy.ProfileImageUrl%>" width="60px" >
+            <%=comment.createdBy.fullName %><pre><%=comment.content %></pre>
+           </div>
+        <%}) %>
+    </div>
+    </div>
+    
+    <%- include('./partials/scripts')%>
+</body>
+</html>
